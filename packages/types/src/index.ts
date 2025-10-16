@@ -1,10 +1,13 @@
 // Client and Project Types
 export interface Client {
   id: string;
+  _id?: string; // MongoDB ObjectId
   name: string;
   email: string;
   company: string;
   status: ClientStatus;
+  assignedUserId?: string; // ID of the user assigned to this client
+  notes?: string;
   createdAt: Date;
   updatedAt: Date;
   projects?: Project[];
@@ -52,19 +55,23 @@ export enum Priority {
 // User and Authentication Types
 export interface User {
   id: string;
+  _id?: string; // MongoDB ObjectId
   email: string;
   name: string;
   role: UserRole;
   avatar?: string;
+  assignedClients?: string[]; // Array of client IDs assigned to this user
+  isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export enum UserRole {
-  ADMIN = 'admin',
-  MANAGER = 'manager',
-  DEVELOPER = 'developer',
-  VIEWER = 'viewer',
+  L0_ADMIN = 'l0_admin',    // Highest level admin - can manage everything
+  L1_ADMIN = 'l1_admin',    // Mid level admin - can manage assigned clients
+  MANAGER = 'manager',      // Can manage assigned clients
+  DEVELOPER = 'developer',  // Can view assigned clients
+  VIEWER = 'viewer',        // Read-only access
 }
 
 // API Response Types
@@ -89,6 +96,9 @@ export interface CreateClientForm {
   name: string;
   email: string;
   company: string;
+  status?: ClientStatus;
+  assignedUserId?: string;
+  notes?: string;
 }
 
 export interface UpdateClientForm extends Partial<CreateClientForm> {

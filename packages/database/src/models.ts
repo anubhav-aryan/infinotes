@@ -7,6 +7,8 @@ const UserSchema = new Schema<User & Document>({
   name: { type: String, required: true },
   role: { type: String, enum: Object.values(UserRole), default: UserRole.VIEWER },
   avatar: { type: String },
+  assignedClients: [{ type: String }],
+  isActive: { type: Boolean, default: true },
 }, {
   timestamps: true,
 });
@@ -17,6 +19,8 @@ const ClientSchema = new Schema<Client & Document>({
   email: { type: String, required: true },
   company: { type: String, required: true },
   status: { type: String, enum: Object.values(ClientStatus), default: ClientStatus.PROSPECT },
+  assignedUserId: { type: String },
+  notes: { type: String },
 }, {
   timestamps: true,
 });
